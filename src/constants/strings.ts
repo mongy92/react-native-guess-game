@@ -37,7 +37,7 @@ export const Strings = {
     hi: 'Hi',
     welcomeBack: 'Welcome back, ',
     welcomeBackSuffix: '!',
-    viewHistory: '\ud83d\udcca View Game History',
+    viewHistory: '📊 View Game History',
   },
 
   // Score
