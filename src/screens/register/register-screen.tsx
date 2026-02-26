@@ -41,7 +41,9 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
         >
           <View style={authStyles.content}>
             <Text style={authStyles.title}>{Strings.auth.createAccount}</Text>
-            <Text style={authStyles.subtitle}>{Strings.auth.signUpToStart}</Text>
+            <Text style={authStyles.subtitle}>
+              {Strings.auth.signUpToStart}
+            </Text>
             <Spacer size="xl" />
             <Card>
               <AuthForm
@@ -64,4 +66,3 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
     </SafeAreaView>
   );
 }
-

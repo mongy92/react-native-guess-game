@@ -41,7 +41,9 @@ export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
         >
           <View style={authStyles.content}>
             <Text style={authStyles.title}>{Strings.auth.welcomeBack}</Text>
-            <Text style={authStyles.subtitle}>{Strings.auth.signInToContinue}</Text>
+            <Text style={authStyles.subtitle}>
+              {Strings.auth.signInToContinue}
+            </Text>
             <Spacer size="xl" />
             <Card>
               <AuthForm
@@ -64,4 +66,3 @@ export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
     </SafeAreaView>
   );
 }
-
