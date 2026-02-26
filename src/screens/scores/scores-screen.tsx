@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
@@ -9,7 +8,6 @@ import {
 import { Card } from '../../components';
 import { Colors, Spacing, Strings } from '../../constants';
 import { GameHistoryEntry } from '../../lib';
-import { AppScreenProps } from '../../navigation/types';
 import { useGameHistory } from './hooks';
 
 function ScoresSeparator() {
@@ -18,20 +16,18 @@ function ScoresSeparator() {
 
 const separatorStyle = { height: 8 };
 
-export function ScoresScreen(_props: AppScreenProps<'Scores'>) {
-  const { history, isLoading } = useGameHistory();
+function formatDate(timestamp: string) {
+  const date = new Date(timestamp);
+  return date.toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
 
-  const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString(undefined, {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  const renderItem = ({ item }: { item: GameHistoryEntry }) => (
+function ScoreItem({ item }: { item: GameHistoryEntry }) {
+  return (
     <Card style={styles.scoreCard}>
       <View style={styles.scoreRow}>
         <View>
@@ -45,19 +41,28 @@ export function ScoresScreen(_props: AppScreenProps<'Scores'>) {
       </View>
     </Card>
   );
+}
 
-  const renderEmpty = () => (
+function EmptyList() {
+  return (
     <View style={styles.emptyContainer}>
       <Text style={styles.emptyIcon}>📊</Text>
       <Text style={styles.emptyTitle}>No Games Yet</Text>
       <Text style={styles.emptyText}>{Strings.scores.noScores}</Text>
     </View>
   );
+}
 
-  if (isLoading) {
+const keyExtractor = (item: GameHistoryEntry) => item.id.toString();
+
+export function ScoresScreen() {
+  const { history, error } = useGameHistory();
+
+  if (error) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={Colors.primary} />
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyTitle}>Something went wrong</Text>
+        <Text style={styles.emptyText}>{error}</Text>
       </View>
     );
   }
@@ -66,14 +71,14 @@ export function ScoresScreen(_props: AppScreenProps<'Scores'>) {
     <View style={styles.container}>
       <FlatList
         data={history}
-        keyExtractor={item => item.id.toString()}
-        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        renderItem={ScoreItem}
         contentContainerStyle={[
           styles.listContent,
           history.length === 0 && styles.emptyListContent,
         ]}
         ItemSeparatorComponent={ScoresSeparator}
-        ListEmptyComponent={renderEmpty}
+        ListEmptyComponent={EmptyList}
       />
     </View>
   );
@@ -84,20 +89,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.surface,
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.surface,
-  },
   listContent: {
     padding: Spacing.lg,
   },
   emptyListContent: {
     flex: 1,
-  },
-  separator: {
-    height: Spacing.sm,
   },
   scoreCard: {
     padding: Spacing.md,
