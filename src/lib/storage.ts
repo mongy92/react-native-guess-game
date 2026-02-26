@@ -7,12 +7,8 @@ export interface StoredSession {
   username: string;
 }
 
-export function generateSalt(): string {
-  return CryptoJS.lib.WordArray.random(16).toString(CryptoJS.enc.Hex);
-}
-
-export function hashPassword(password: string, salt: string): string {
-  return CryptoJS.SHA256(salt + password).toString(CryptoJS.enc.Hex);
+export function hashPassword(password: string): string {
+  return CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
 }
 
 export async function saveSession(username: string): Promise<void> {

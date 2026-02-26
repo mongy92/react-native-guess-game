@@ -12,7 +12,6 @@ export function initDatabase(): void {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT UNIQUE NOT NULL,
       passwordHash TEXT NOT NULL,
-      salt TEXT NOT NULL DEFAULT '',
       lowestGuesses INTEGER
     )
   `);
@@ -28,17 +27,13 @@ export function initDatabase(): void {
   `);
 }
 
-export function createUser(
-  username: string,
-  passwordHash: string,
-  salt: string,
-): boolean {
+export function createUser(username: string, passwordHash: string): boolean {
   if (!db) throw new Error('Database not initialized');
   try {
-    db.executeSync(
-      'INSERT INTO users (username, passwordHash, salt) VALUES (?, ?, ?)',
-      [username, passwordHash, salt],
-    );
+    db.executeSync('INSERT INTO users (username, passwordHash) VALUES (?, ?)', [
+      username,
+      passwordHash,
+    ]);
     return true;
   } catch {
     return false;
@@ -47,18 +42,14 @@ export function createUser(
 
 export function findUser(
   username: string,
-): { username: string; passwordHash: string; salt: string } | null {
+): { username: string; passwordHash: string } | null {
   if (!db) throw new Error('Database not initialized');
   const result = db.executeSync(
-    'SELECT username, passwordHash, salt FROM users WHERE username = ?',
+    'SELECT username, passwordHash FROM users WHERE username = ?',
     [username],
   );
   if (result.rows && result.rows.length > 0) {
-    return result.rows[0] as {
-      username: string;
-      passwordHash: string;
-      salt: string;
-    };
+    return result.rows[0] as { username: string; passwordHash: string };
   }
   return null;
 }

@@ -7,13 +7,7 @@ import React, {
 } from 'react';
 import { Strings } from '../constants';
 import { createUser, findUser, initDatabase } from '../lib';
-import {
-  clearSession,
-  generateSalt,
-  getSession,
-  hashPassword,
-  saveSession,
-} from '../lib';
+import { clearSession, getSession, hashPassword, saveSession } from '../lib';
 
 export interface User {
   username: string;
@@ -62,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!existingUser) {
         return { success: false, error: Strings.auth.userNotFound };
       }
-      const passwordHash = hashPassword(password, existingUser.salt);
+      const passwordHash = hashPassword(password);
       if (existingUser.passwordHash !== passwordHash) {
         return { success: false, error: Strings.auth.invalidPassword };
       }
@@ -76,9 +70,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = useCallback(async (username: string, password: string) => {
     try {
-      const salt = generateSalt();
-      const passwordHash = hashPassword(password, salt);
-      const created = createUser(username, passwordHash, salt);
+      const passwordHash = hashPassword(password);
+      const created = createUser(username, passwordHash);
       if (!created) {
         return { success: false, error: Strings.auth.usernameExists };
       }
