@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Button } from '../../../components/button';
-import { Input } from '../../../components/input';
-import { Spacer } from '../../../components/spacer';
-import { Strings } from '../../../constants';
+import { Strings } from '../constants';
+import { Button } from './button';
+import { Input } from './input';
+import { Spacer } from './spacer';
 
 interface AuthFormProps {
   onSubmit: (username: string, password: string) => Promise<void>;

@@ -4,16 +4,15 @@ import {
   Platform,
   Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Card, Spacer } from '../../components';
-import { Colors, Spacing, Strings } from '../../constants';
+import { AuthForm, Card, Spacer } from '../../components';
+import { Strings } from '../../constants';
 import { useAuth } from '../../contexts/auth-context';
 import { AuthScreenProps } from '../../navigation/types';
-import { AuthForm } from './components';
+import { authStyles } from '../auth/styles';
 
 export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
   const { login } = useAuth();
@@ -31,18 +30,18 @@ export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={authStyles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardView}
+        style={authStyles.keyboardView}
       >
         <ScrollView
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={authStyles.scrollContent}
           keyboardShouldPersistTaps="handled"
         >
-          <View style={styles.content}>
-            <Text style={styles.title}>{Strings.auth.welcomeBack}</Text>
-            <Text style={styles.subtitle}>{Strings.auth.signInToContinue}</Text>
+          <View style={authStyles.content}>
+            <Text style={authStyles.title}>{Strings.auth.welcomeBack}</Text>
+            <Text style={authStyles.subtitle}>{Strings.auth.signInToContinue}</Text>
             <Spacer size="xl" />
             <Card>
               <AuthForm
@@ -54,9 +53,9 @@ export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
             </Card>
             <Spacer size="lg" />
             <Pressable onPress={() => navigation.navigate('Register')}>
-              <Text style={styles.link}>
+              <Text style={authStyles.link}>
                 {Strings.auth.dontHaveAccount}{' '}
-                <Text style={styles.linkBold}>{Strings.auth.register}</Text>
+                <Text style={authStyles.linkBold}>{Strings.auth.register}</Text>
               </Text>
             </Pressable>
           </View>
@@ -66,40 +65,3 @@ export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.surface,
-  },
-  keyboardView: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  content: {
-    paddingHorizontal: Spacing.lg,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: Colors.text,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginTop: Spacing.xs,
-  },
-  link: {
-    textAlign: 'center',
-    color: Colors.textSecondary,
-    fontSize: 14,
-  },
-  linkBold: {
-    color: Colors.primary,
-    fontWeight: '600',
-  },
-});

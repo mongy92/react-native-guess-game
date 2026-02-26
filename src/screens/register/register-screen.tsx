@@ -4,16 +4,15 @@ import {
   Platform,
   Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Card, Spacer } from '../../components';
-import { Colors, Spacing, Strings } from '../../constants';
+import { AuthForm, Card, Spacer } from '../../components';
+import { Strings } from '../../constants';
 import { useAuth } from '../../contexts/auth-context';
 import { AuthScreenProps } from '../../navigation/types';
-import { AuthForm } from '../login/components';
+import { authStyles } from '../auth/styles';
 
 export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
   const { register } = useAuth();
@@ -31,18 +30,18 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={authStyles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardView}
+        style={authStyles.keyboardView}
       >
         <ScrollView
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={authStyles.scrollContent}
           keyboardShouldPersistTaps="handled"
         >
-          <View style={styles.content}>
-            <Text style={styles.title}>{Strings.auth.createAccount}</Text>
-            <Text style={styles.subtitle}>{Strings.auth.signUpToStart}</Text>
+          <View style={authStyles.content}>
+            <Text style={authStyles.title}>{Strings.auth.createAccount}</Text>
+            <Text style={authStyles.subtitle}>{Strings.auth.signUpToStart}</Text>
             <Spacer size="xl" />
             <Card>
               <AuthForm
@@ -54,9 +53,9 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
             </Card>
             <Spacer size="lg" />
             <Pressable onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.link}>
+              <Text style={authStyles.link}>
                 {Strings.auth.alreadyHaveAccount}{' '}
-                <Text style={styles.linkBold}>{Strings.auth.login}</Text>
+                <Text style={authStyles.linkBold}>{Strings.auth.login}</Text>
               </Text>
             </Pressable>
           </View>
@@ -66,40 +65,3 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.surface,
-  },
-  keyboardView: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  content: {
-    paddingHorizontal: Spacing.lg,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: Colors.text,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginTop: Spacing.xs,
-  },
-  link: {
-    textAlign: 'center',
-    color: Colors.textSecondary,
-    fontSize: 14,
-  },
-  linkBold: {
-    color: Colors.primary,
-    fontWeight: '600',
-  },
-});
