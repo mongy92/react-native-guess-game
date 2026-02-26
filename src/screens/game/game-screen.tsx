@@ -17,7 +17,7 @@ import { useGame, useScore } from './hooks';
 
 export function GameScreen({ navigation }: AppScreenProps<'Game'>) {
   const { user, logout } = useAuth();
-  const { target, guessCount, feedback, isWon, makeGuess, resetGame } =
+  const { guessCount, feedback, isWon, gameResult, makeGuess, resetGame } =
     useGame();
   const {
     lowestGuesses,
@@ -28,10 +28,10 @@ export function GameScreen({ navigation }: AppScreenProps<'Game'>) {
   } = useScore();
 
   useEffect(() => {
-    if (isWon && !hasSaved) {
-      saveGameResult(guessCount, target);
+    if (isWon && !hasSaved && gameResult) {
+      saveGameResult(gameResult.guessCount, gameResult.targetNumber);
     }
-  }, [isWon, hasSaved, guessCount, target, saveGameResult]);
+  }, [isWon, hasSaved, gameResult, saveGameResult]);
 
   const handlePlayAgain = () => {
     resetGame();
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   newRecordBadge: {
-    backgroundColor: '#E8F5E9',
+    backgroundColor: Colors.successLight,
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.sm,
     borderRadius: 20,
