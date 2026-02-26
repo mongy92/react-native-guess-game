@@ -4,11 +4,10 @@ A number guessing game built with React Native CLI, featuring user authenticatio
 
 ## 📱 Demo
 
+
 | Android | iOS |
 |:---:|:---:|
-| <video src="./demo/demo-android.mov" width="300" /> | <video src="./demo/demo-ios.mov" width="300" /> |
-
-> *If videos don't play in browser, download from [demo/](./demo/) folder*
+| <video src="https://github.com/user-attachments/assets/0bbd202d-858d-4ce9-b118-bf19a46c9e6d" width="300" /> | <video src="https://github.com/user-attachments/assets/64244420-a8b4-4bf7-8340-8db26ffd843e" width="300" /> |
 
 ## ✨ Features
 
