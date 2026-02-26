@@ -6,7 +6,7 @@ A number guessing game built with React Native CLI, featuring user authenticatio
 
 | Android | iOS |
 |:---:|:---:|
-| <video src="./demo/demo-android.webm" width="300" /> | <video src="./demo/demo-ios.mov" width="300" /> |
+| <video src="./demo/demo-android.mov" width="300" /> | <video src="./demo/demo-ios.mov" width="300" /> |
 
 > *If videos don't play in browser, download from [demo/](./demo/) folder*
 
