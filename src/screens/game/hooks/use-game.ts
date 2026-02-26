@@ -1,19 +1,24 @@
 import { useCallback, useState } from 'react';
+import { GameConfig } from '../../../constants';
 
 export type Feedback = 'higher' | 'lower' | 'correct' | null;
 
-const MIN_NUMBER = 1;
-const MAX_NUMBER = 43;
-
 function generateTarget(): number {
-  return Math.floor(Math.random() * MAX_NUMBER) + MIN_NUMBER;
+  return (
+    Math.floor(Math.random() * GameConfig.MAX_NUMBER) + GameConfig.MIN_NUMBER
+  );
+}
+
+export interface GameResult {
+  guessCount: number;
+  targetNumber: number;
 }
 
 interface UseGameReturn {
-  target: number;
   guessCount: number;
   feedback: Feedback;
   isWon: boolean;
+  gameResult: GameResult | null;
   makeGuess: (guess: number) => void;
   resetGame: () => void;
 }
@@ -49,5 +54,9 @@ export function useGame(): UseGameReturn {
     setIsWon(false);
   }, []);
 
-  return { target, guessCount, feedback, isWon, makeGuess, resetGame };
+  const gameResult: GameResult | null = isWon
+    ? { guessCount, targetNumber: target }
+    : null;
+
+  return { guessCount, feedback, isWon, gameResult, makeGuess, resetGame };
 }

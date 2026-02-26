@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { Button } from '../../../components/button';
-import { Spacer } from '../../../components/spacer';
-import { Colors, Spacing, Strings } from '../../../constants';
+import { Button, Spacer } from '../../../components';
+import { Colors, GameConfig, Spacing, Strings } from '../../../constants';
 
 interface GuessInputProps {
   onGuess: (guess: number) => void;
@@ -15,7 +14,11 @@ export function GuessInput({ onGuess, disabled }: GuessInputProps) {
 
   const handleGuess = () => {
     const num = parseInt(value, 10);
-    if (isNaN(num) || num < 1 || num > 43) {
+    if (
+      isNaN(num) ||
+      num < GameConfig.MIN_NUMBER ||
+      num > GameConfig.MAX_NUMBER
+    ) {
       setError(Strings.game.invalidRange);
       return;
     }
