@@ -1,97 +1,151 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🎯 React Native Guess Game
 
-# Getting Started
+A number guessing game built with React Native CLI, featuring user authentication, score tracking, and game history.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 📱 Demo
 
-## Step 1: Start Metro
+| Android | iOS |
+|:---:|:---:|
+| <video src="./demo/demo-android.webm" width="300" /> | <video src="./demo/demo-ios.mov" width="300" /> |
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+> *If videos don't play in browser, download from [demo/](./demo/) folder*
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## ✨ Features
 
-```sh
-# Using npm
+- **User Authentication** - Register and login with secure password hashing
+- **Number Guessing Game** - Guess a random number between 1-43 with feedback
+- **Score Tracking** - Personal best score tracking with new record detection
+- **Game History** - View past games with date timestamps
+- **Session Persistence** - Stay logged in using secure device storage
+
+## 🛠 Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| **Framework** | React Native 0.84 (New Architecture) |
+| **Language** | TypeScript |
+| **Navigation** | React Navigation v7 (Native Stack) |
+| **Database** | SQLite (react-native-sqlite-storage) |
+| **Secure Storage** | react-native-keychain |
+| **Crypto** | crypto-js (SHA256) |
+| **Animation** | react-native-reanimated 4.x |
+
+## 📋 Prerequisites
+
+- Node.js >= 22.11.0
+- Ruby (for iOS CocoaPods)
+- Xcode 15+ (iOS)
+- Android Studio with SDK 34+ (Android)
+- CocoaPods
+
+## 🚀 Getting Started
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/mongy92/react-native-guess-game.git
+cd react-native-guess-game
+
+# Install dependencies
+npm install
+
+# Install iOS pods
+cd ios && pod install && cd ..
+```
+
+### Running the App
+
+```bash
+# Start Metro bundler
 npm start
 
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+# Run on iOS
 npm run ios
 
-# OR using Yarn
-yarn ios
+# Run on Android
+npm run android
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## 📁 Project Structure
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```
+src/
+├── App.tsx                 # App entry point
+├── components/             # Shared UI components
+│   ├── button.tsx
+│   ├── card.tsx
+│   ├── input.tsx
+│   └── spacer.tsx
+├── constants/              # Design tokens & strings
+│   ├── colors.ts
+│   ├── spacing.ts
+│   └── strings.ts
+├── contexts/               # React Context providers
+│   └── auth-context.tsx
+├── lib/                    # Core utilities
+│   ├── database.ts         # SQLite operations
+│   └── storage.ts          # Secure session storage
+├── navigation/             # Navigation configuration
+│   ├── app-stack.tsx
+│   ├── auth-stack.tsx
+│   └── types.ts
+└── screens/                # Screen components
+    ├── game/
+    │   ├── components/
+    │   ├── hooks/
+    │   └── game-screen.tsx
+    ├── login/
+    ├── register/
+    └── scores/
+```
 
-## Step 3: Modify your app
+## 🏗 Architecture
 
-Now that you have successfully run the app, let's make changes!
+### Design Patterns
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+- **Feature-based folder structure** - Each screen has its own components and hooks
+- **Custom hooks** - Business logic extracted into reusable hooks
+- **Barrel exports** - Clean imports via index.ts files
+- **Context API** - Global auth state without external state management
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+### Database Schema
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+```sql
+-- Users table
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  passwordHash TEXT NOT NULL,
+  lowestGuesses INTEGER
+);
 
-## Congratulations! :tada:
+-- Game history table
+CREATE TABLE game_history (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT NOT NULL,
+  guessCount INTEGER NOT NULL,
+  targetNumber INTEGER NOT NULL,
+  playedAt TEXT NOT NULL
+);
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+### Security
 
-### Now what?
+- Passwords are hashed with SHA256 before storage
+- Sessions stored securely in iOS Keychain / Android Keystore
+- No plaintext credentials stored
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+## 📝 Scripts
 
-# Troubleshooting
+| Script | Description |
+|--------|-------------|
+| `npm start` | Start Metro bundler |
+| `npm run ios` | Run on iOS simulator |
+| `npm run android` | Run on Android emulator |
+| `npm run lint` | Run ESLint |
+| `npm test` | Run Jest tests |
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## 📄 License
 
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+This project is licensed under the MIT License.
